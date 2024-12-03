@@ -1,4 +1,5 @@
-﻿
+﻿module AdventCode_2024_FSharp.day1
+
 open System.IO
 
 let readStringsFromFile (filePath: string) : string list =

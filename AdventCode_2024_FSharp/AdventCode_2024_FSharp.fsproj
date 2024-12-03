@@ -10,6 +10,8 @@
         <Content Include="Data\Day1.txt">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Compile Include="day2.fs" />
+        <Compile Include="program.fs" />
     </ItemGroup>
 
 </Project>
