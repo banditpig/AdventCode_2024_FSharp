@@ -74,7 +74,7 @@ let countMAS (s: string) =
     masRegex1.Matches(s).Count + masRegex2.Matches(s).Count
 
 let inputData =
-       let lines = File.ReadAllLines("/Users/mikehoughton/RiderProjects/AdventCode_2024_FSharp/AdventCode_2024_FSharp/Data/Day3.txt")
+       let lines = File.ReadAllLines("/Users/mikehoughton/RiderProjects/AdventCode_2024_FSharp/AdventCode_2024_FSharp/Data/Day4.txt")
        let matrix = Array2D.init lines.Length lines.[0].Length (fun i j -> lines.[i].[j])
        matrix
        
