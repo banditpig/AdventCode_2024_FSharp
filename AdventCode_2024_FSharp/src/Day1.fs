@@ -1,4 +1,4 @@
-﻿module AdventCode_2024_FSharp.day1
+﻿module Day1
 
 open System.IO
 
@@ -31,12 +31,12 @@ let createLists =
                 |> List.map (fun (a,b)    -> (int a, int b))
  
 
-let part1 =
+let part1 () =
      let lists = createLists
      let (left, right) = List.unzip lists |> fun (l, r) -> (List.sort l, List.sort r)
-     printfn "%A" (sumDiffs left right)
+     printfn $"Hello1 %A{sumDiffs left right}"
      
-let part2 =
+let part2 () =
     let lists = createLists
                 
     let (left, right) = List.unzip lists |> fun (l, r) -> (List.sort l, List.sort r)
@@ -46,7 +46,7 @@ let part2 =
              |> List.sum
     
    
-    printfn "%A" xx
+    printfn $"Hello2 %A{xx}"
     
 
                
