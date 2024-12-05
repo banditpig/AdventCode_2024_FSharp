@@ -52,8 +52,8 @@ let evalInstructions (instr) =
     acc   
     
 let part1 () =
-        let lines = File.ReadAllLines("/Users/mikehoughton/RiderProjects/AdventCode_2024_FSharp/AdventCode_2024_FSharp/Data/Day3.txt")
-        String.concat "" lines |> extractInstructions |> evalInstructions |> printfn "Part 1 D3 : %A"
+        let lines = File.ReadAllLines("./Data/Day3.txt")
+        String.concat "" lines |> extractInstructions |> evalInstructions |> printfn "Day3 Part1 %A"
         
        
     

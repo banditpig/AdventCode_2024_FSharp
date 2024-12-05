@@ -74,7 +74,7 @@ let countMAS (s: string) =
     masRegex1.Matches(s).Count + masRegex2.Matches(s).Count
 
 let inputData =
-       let lines = File.ReadAllLines("/Users/mikehoughton/RiderProjects/AdventCode_2024_FSharp/AdventCode_2024_FSharp/Data/Day4.txt")
+       let lines = File.ReadAllLines("./Data/Day4.txt")
        let matrix = Array2D.init lines.Length lines.[0].Length (fun i j -> lines.[i].[j])
        matrix
        
@@ -95,7 +95,7 @@ let part1 () =
     let mc = m |>  toStrings |> List.map countXMAS |> List.sum
     let ac = a |>  toStrings |> List.map countXMAS |> List.sum 
     
-    printfn "Part 1 D3 : %A" (rc + cc + mc + ac)
+    printfn "Day4 Part1 %A" (rc + cc + mc + ac)
    
 let fij (i: int) (j: int) (matrix: 'a[,]): bool =
     
@@ -119,7 +119,7 @@ let part2 () =
             if data.[i, j] = 'A' then if fij i j data   then cnt <- cnt + 1 
               
             //printf "%c" data.[i, j]
-    printfn "cnt %A" cnt
+    printfn "Day4 Part2 %A" cnt
     
    
     // let (m,  a) = getAllDiagonals data

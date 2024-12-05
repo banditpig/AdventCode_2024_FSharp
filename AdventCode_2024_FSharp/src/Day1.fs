@@ -34,7 +34,7 @@ let createLists =
 let part1 () =
      let lists = createLists
      let (left, right) = List.unzip lists |> fun (l, r) -> (List.sort l, List.sort r)
-     printfn $"Hello1 %A{sumDiffs left right}"
+     printfn $"Day1 Part1 %A{sumDiffs left right}"
      
 let part2 () =
     let lists = createLists
@@ -46,7 +46,7 @@ let part2 () =
              |> List.sum
     
    
-    printfn $"Hello2 %A{xx}"
+    printfn $"Day1 Part2 %A{xx}"
     
 
                

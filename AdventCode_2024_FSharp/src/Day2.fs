@@ -24,18 +24,21 @@ let checkReport (report: int list) : ReportState =
     check 0 slope
     
 let part1 () =
-    let reports = [
-        [7; 6; 4; 2; 1]
-        [1; 2; 7; 8; 9]
-        [9; 7; 6; 2; 1]
-        [1; 3; 2; 4; 5]
-        [8; 6; 4; 4; 1]
-        [1; 3; 6; 7; 9]
-    ]
+ 
+    let reports = 
+        File.ReadAllLines("./Data/Day2.txt")
+        |> Array.map (fun line -> 
+            line.Split(' ') 
+            |> Array.map int 
+            |> Array.toList
+        )
+        |> Array.toList
 
-    let reports = File.ReadAllLines("/Users/mikehoughton/RiderProjects/AdventCode_2024_FSharp/AdventCode_2024_FSharp/Data/Day2.txt")
-                |> Array.map (fun line -> line.Split(' ') |> Array.map int |> Array.toList)
-                |> Array.toList
-    let x = reports |> List.map checkReport |> List.filter (fun x -> x = Safe) |> List.length
-    printfn "day2Hi %A" x
+    let x = 
+        reports
+        |> List.map checkReport
+        |> List.filter (fun x -> x = Safe)
+        |> List.length
+        
+    printfn "Day2 Part1 %A" x
     
