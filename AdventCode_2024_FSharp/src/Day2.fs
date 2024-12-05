@@ -52,12 +52,16 @@ let canFixReport (report: int list) : bool =
         let mutable result = false
 
         while idx < report.Length - 1 && not result do
+            printfn "Old Report %A" report
             let newReport = report.[0 .. idx - 1] @ report.[idx + 1 ..]
+            printfn "New Report %A" newReport
+            printfn "----------------"
 
             match checkReport newReport with
             | Safe -> result <- true
             | _ -> idx <- idx + 1
 
+        printfn "%A" result
         result
 
     check 0
