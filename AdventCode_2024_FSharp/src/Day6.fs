@@ -18,11 +18,12 @@ type Cell =
 
 
 type Guard =
-    { mutable direction: Direction
-      mutable currentLocation: XY
-      exitLocation: XY
-      mutable exited: bool
-      mutable trail: XY Set }
+    { direction: Direction
+      currentLocation: XY
+      cycle: bool
+      startLocation: XY
+
+      trail: XY Set }
 
 type FloorMap = Cell[,]
 
@@ -36,8 +37,8 @@ let nextCell (xy: XY, d: Direction, map: FloorMap) : Option<Cell> =
 
     | Right ->
         match xy.x with
-        | _ when xy.x >= map.GetLength(1) -> None
-        | _ -> Some map.[xy.y, xy.x + 1]
+        | _ when xy.x < map.GetLength(0) - 1 -> Some map.[xy.y, xy.x + 1]
+        | _ -> None
 
     | Up ->
         match xy.y with
@@ -46,8 +47,8 @@ let nextCell (xy: XY, d: Direction, map: FloorMap) : Option<Cell> =
 
     | Down ->
         match xy.y with
-        | _ when xy.y >= map.GetLength(0) -> None
-        | _ -> Some map.[xy.y + 1, xy.x]
+        | _ when xy.y < map.GetLength(1) - 1 -> Some map.[xy.y + 1, xy.x]
+        | _ -> None
 
 
 
@@ -74,25 +75,29 @@ let exitMap (xy: XY) (map: FloorMap) : bool =
     else
         false
 
-let rec moveGuard (guard: Guard, map: FloorMap) : Guard =
-    //printfn "Guard %A" <| Set.count guard.trail
+let rec moveGuard (map: FloorMap) (guard: Guard) : Guard =
+
     let next = nextCell (guard.currentLocation, guard.direction, map)
+
 
     match next with
     | None -> guard
-    | Some cell ->
-        match cell with
-        | Empty ->
-            let nextLocation = nextXY (guard.direction, guard.currentLocation)
+    | Some Empty ->
+        let nextLocation = nextXY (guard.direction, guard.currentLocation)
+        if guard.startLocation = nextLocation then
+            { guard with cycle = true }
 
-            guard.currentLocation <- nextLocation
-            guard.trail <- Set.add nextLocation guard.trail
-            moveGuard (guard, map)
-        | Obstacle ->
-            guard.direction <- rotateRight guard.direction
-            moveGuard (guard, map)
-
-
+        else
+            { guard with
+                currentLocation = nextLocation
+                cycle = false
+                trail = Set.add nextLocation guard.trail }
+            |> moveGuard map
+    
+    | Some Obstacle ->
+        { guard with
+            direction = rotateRight guard.direction }
+        |> moveGuard map
 
 
 let fillMap (filePath: string) =
@@ -104,9 +109,9 @@ let fillMap (filePath: string) =
 
     let mutable guard =
         { direction = Right
+          cycle = false
+          startLocation = { x = 0; y = 0 }
           currentLocation = { x = 0; y = 0 }
-          exitLocation = { x = width - 1; y = height - 1 }
-          exited = false
           trail = Set.empty }
 
     for y in 0 .. height - 1 do
@@ -119,9 +124,9 @@ let fillMap (filePath: string) =
                 | '^' ->
                     guard <-
                         { direction = Up
+                          cycle = false
+                          startLocation = { x = x; y = y }
                           currentLocation = { x = x; y = y }
-                          exitLocation = { x = width - 1; y = height - 1 }
-                          exited = false
                           trail = Set.empty }
 
                     Empty
@@ -131,9 +136,7 @@ let fillMap (filePath: string) =
 
     (map, guard)
 
-let evaluateMap (map: FloorMap) (guard: Guard) : Guard =
-    let newGuard = moveGuard (guard, map)
-    newGuard
+let evaluateMap (map: FloorMap) (guard: Guard) : Guard = moveGuard map guard
 
 
 
@@ -142,4 +145,25 @@ let part1 () =
     //4453 too low answer is 4454
     let (map, guard) = fillMap "./Data/Day6.txt" // let map = fillMap "./Data/Day6.txt"
     let g = evaluateMap map guard
-    printfn "Day6 Part1 %A" <| Set.count g.trail + 1
+    printfn "Day6 Part1 %A" <| Set.count g.trail
+
+let part2 () =
+    //4453 too low answer is 4454
+    let mutable map, guard = fillMap "./Data/Day6.txt" // let map = fillMap "./Data/Day6.txt"
+
+    for row in 0 .. Array2D.length1 map - 1 do
+        for col in 0 .. Array2D.length2 map - 1 do
+            if
+                map.[row, col] = Empty
+                && row <> guard.startLocation.y
+                && col <> guard.startLocation.x
+            then
+                map.[row, col] <- Obstacle
+
+                let g = moveGuard map guard
+                printfn " %A" g.cycle
+                map.[row, col] <- Empty
+
+
+// let g = evaluateMap map guard
+// printfn "Day6 Part1 %A" <| Set.count g.trail + 1
