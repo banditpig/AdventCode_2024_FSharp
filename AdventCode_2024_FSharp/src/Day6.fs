@@ -76,29 +76,33 @@ let exitMap (xy: XY) (map: FloorMap) : bool =
         false
 
 let rec moveGuard (map: FloorMap) (guard: Guard) : Guard =
+    printfn "Guard at %A facing %A" guard.currentLocation guard.direction
 
     let next = nextCell (guard.currentLocation, guard.direction, map)
 
-
     match next with
-    | None -> guard
+    | None ->
+        printfn "Hit the edge of the map"
+        guard
     | Some Empty ->
         let nextLocation = nextXY (guard.direction, guard.currentLocation)
-        if guard.startLocation = nextLocation then
-            { guard with cycle = true }
+        printfn "Moving to %A" nextLocation
 
+        if guard.startLocation = nextLocation then
+            printfn "Cycle detected"
+            { guard with cycle = true }
         else
             { guard with
                 currentLocation = nextLocation
                 cycle = false
                 trail = Set.add nextLocation guard.trail }
             |> moveGuard map
-    
     | Some Obstacle ->
+        printfn "Encountered an obstacle, rotating"
+
         { guard with
             direction = rotateRight guard.direction }
         |> moveGuard map
-
 
 let fillMap (filePath: string) =
 
