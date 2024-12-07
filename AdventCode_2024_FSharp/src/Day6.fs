@@ -23,7 +23,7 @@ type Guard =
       cycle: bool
       startLocation: XY
 
-      trail: XY Set }
+      trail: Set<Direction * XY> }
 
 type FloorMap = Cell[,]
 
@@ -76,29 +76,23 @@ let exitMap (xy: XY) (map: FloorMap) : bool =
         false
 
 let rec moveGuard (map: FloorMap) (guard: Guard) : Guard =
-    printfn "Guard at %A facing %A" guard.currentLocation guard.direction
 
     let next = nextCell (guard.currentLocation, guard.direction, map)
 
     match next with
-    | None ->
-        printfn "Hit the edge of the map"
-        guard
+    | None -> guard
     | Some Empty ->
         let nextLocation = nextXY (guard.direction, guard.currentLocation)
-        printfn "Moving to %A" nextLocation
 
-        if guard.startLocation = nextLocation then
+        if Set.contains (guard.direction, guard.currentLocation) guard.trail then
             printfn "Cycle detected"
             { guard with cycle = true }
         else
             { guard with
-                currentLocation = nextLocation
-                cycle = false
-                trail = Set.add nextLocation guard.trail }
+                trail = Set.add (guard.direction, guard.currentLocation) guard.trail
+                currentLocation = nextLocation }
             |> moveGuard map
     | Some Obstacle ->
-        printfn "Encountered an obstacle, rotating"
 
         { guard with
             direction = rotateRight guard.direction }
@@ -146,28 +140,33 @@ let evaluateMap (map: FloorMap) (guard: Guard) : Guard = moveGuard map guard
 
 
 let part1 () =
-    //4453 too low answer is 4454
+
     let (map, guard) = fillMap "./Data/Day6.txt" // let map = fillMap "./Data/Day6.txt"
     let g = evaluateMap map guard
     printfn "Day6 Part1 %A" <| Set.count g.trail
 
 let part2 () =
-    //4453 too low answer is 4454
-    let mutable map, guard = fillMap "./Data/Day6.txt" // let map = fillMap "./Data/Day6.txt"
+    //1503 is correct
+    let map, guard = fillMap "./Data/Day6.txt"
+    let mutable cycleCount = 0
 
     for row in 0 .. Array2D.length1 map - 1 do
         for col in 0 .. Array2D.length2 map - 1 do
             if
                 map.[row, col] = Empty
-                && row <> guard.startLocation.y
-                && col <> guard.startLocation.x
+                && (row <> guard.startLocation.y || col <> guard.startLocation.x)
             then
-                map.[row, col] <- Obstacle
+                // Create a temporary copy of the map
+                let testMap = Array2D.copy map
+                testMap.[row, col] <- Obstacle
 
-                let g = moveGuard map guard
-                printfn " %A" g.cycle
-                map.[row, col] <- Empty
+                let result = moveGuard testMap guard
 
+                // Check if a cycle was created
+                if result.cycle then
+                    cycleCount <- cycleCount + 1
 
-// let g = evaluateMap map guard
+    printfn "Day6 Part2 Cycle Count: %d" cycleCount
+
+// let g = evaluateMap map guard 1448, 1449
 // printfn "Day6 Part1 %A" <| Set.count g.trail + 1
