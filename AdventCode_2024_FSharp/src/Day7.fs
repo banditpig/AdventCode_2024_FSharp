@@ -7,8 +7,6 @@ type Op =
     | Mul
 
 let generateExpressions numbers operators =
-
-
     let rec generateCombos (current: string) remaining =
         match remaining with
         | [] -> [ current.Split(";") ]
