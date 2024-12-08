@@ -44,27 +44,43 @@ let part1 () =
 
     printfn "Day2 Part1 %A" x
 
-let canFixReport (report: int list) : bool =
-    //[1; 2; 7; 8; 9]
-    //remove one element at a time and check if the report is safe only allowed one fix
-    let check index =
-        let mutable idx = index
-        let mutable result = false
+let canFixReport2 (report: int list) : bool =
+    // Remove one element at a time and check if the report is safe
+    if report.Length <= 1 then
+        false // Single-element reports can't be fixed
+    else
+        report
+        |> List.mapi (fun idx _ ->
+            let newReport =
+                if idx = 0 then
+                    report.[1..]
+                else
+                    report.[0 .. idx - 1] @ report.[idx + 1 ..]
 
-        while idx < report.Length - 1 && not result do
-            printfn "Old Report %A" report
-            let newReport = report.[0 .. idx - 1] @ report.[idx + 1 ..]
-            printfn "New Report %A" newReport
-            printfn "----------------"
-
-            match checkReport newReport with
-            | Safe -> result <- true
-            | _ -> idx <- idx + 1
-
-        printfn "%A" result
-        result
-
-    check 0
+            checkReport newReport)
+        |> List.exists (fun state -> state = Safe)
+// let canFixReport (report: int list) : bool =
+//     //[1; 2; 7; 8; 9]
+//     //remove one element at a time and check if the report is safe only allowed one fix
+//     let check index =
+//         let mutable idx = index
+//         let mutable result = false
+//
+//         while idx < report.Length - 1 && not result do
+//
+//             let newReport = report.[0 .. idx - 1] @ report.[idx + 1 ..]
+//
+//
+//
+//             match checkReport newReport with
+//             | Safe -> result <- true
+//             | _ -> idx <- idx + 1
+//
+//
+//         result
+//
+//     check 0
+53 + 383 = 436
 
 let part2 () =
     let reports =
@@ -72,11 +88,8 @@ let part2 () =
         |> Array.map (fun line -> line.Split(' ') |> Array.map int |> Array.toList)
         |> Array.toList
 
-    let bdReports =
-        reports
-        //|> List.map (fun r -> (r, checkReport r)) //checkReport
-        //|> List.filter (fun (_, x) -> x = Unsafe)
-        |> List.filter (fun (r) -> canFixReport r)
-        |> List.length
+    let unsafeReports = reports |> List.filter (fun r -> checkReport r = Unsafe)
 
-    printfn "Day2 Part1 %A" bdReports
+    let fixableReports = unsafeReports |> List.filter canFixReport2
+
+    printfn "Day2 Part2 %A" (List.length fixableReports)
