@@ -1,5 +1,6 @@
 ﻿module AdventCode_2024_FSharp_Tests
 
+open Arrays
 open NUnit.Framework
 open NUnit.Framework.Legacy
 open Day8
@@ -27,30 +28,39 @@ type DistanceTests() =
     [<Test>]
     member this.``Distance between points in different quadrants is correct``() =
         ClassicAssert.AreEqual(11, distance (-2, -2) (3, 4))
-[<TestFixture>]
-type PointsOnLineWithinGridTests() =
 
     [<Test>]
-    member this.``Points on horizontal line``() =
-        let points = pointsOnLineWithinGrid (0, 0) (3, 0) 
-        ClassicAssert.AreEqual([(0, 0); (1, 0); (2, 0); (3, 0)], points)
+    member this.``Finds a block of contiguous elements in the middle of the array``() =
+        let arr = [| 1; 2; 2; 2; 3; 4 |]
+        let result = contiguousBlockOf 2 0 arr
+        ClassicAssert.AreEqual(Some(1, 3), result)
 
     [<Test>]
-    member this.``Points on vertical line``() =
-        let points = pointsOnLineWithinGrid (0, 0) (0, 3) (5, 5)
-        ClassicAssert.AreEqual([(0, 0); (0, 1); (0, 2); (0, 3)], points)
+    member this.``Finds a block starting from a given index``() =
+        let arr = [| 1; 1; 2; 2; 3; 4 |]
+        let result = contiguousBlockOf 2 2 arr
+        ClassicAssert.AreEqual(Some(2, 3), result)
 
     [<Test>]
-    member this.``Points on diagonal line``() =
-        let points = pointsOnLineWithinGrid (0, 0) (3, 3) (5, 5)
-        ClassicAssert.AreEqual([(0, 0); (1, 1); (2, 2); (3, 3)], points)
+    member this.``Returns None if no contiguous block exists``() =
+        let arr = [| 1; 2; 3; 4 |]
+        let result = contiguousBlockOf 5 0 arr
+        ClassicAssert.AreEqual(None, result)
 
     [<Test>]
-    member this.``Points on line outside grid``() =
-        let points = pointsOnLineWithinGrid (0, 0) (6, 6) (5, 5)
-        ClassicAssert.AreEqual([(0, 0); (1, 1); (2, 2); (3, 3); (4, 4); (5, 5)], points)
+    member this.``Handles an empty array gracefully``() =
+        let arr = [||]
+        let result = contiguousBlockOf 2 0 arr
+        ClassicAssert.AreEqual(None, result)
 
     [<Test>]
-    member this.``Points on line with negative coordinates``() =
-        let points = pointsOnLineWithinGrid (-2, -2) (2, 2) (5, 5)
-        ClassicAssert.AreEqual([(-2, -2); (-1, -1); (0, 0); (1, 1); (2, 2)], points)
+    member this.``Returns None if from index is out of bounds``() =
+        let arr = [| 1; 2; 3; 4 |]
+        let result = contiguousBlockOf 2 10 arr
+        ClassicAssert.AreEqual(None, result)
+
+    [<Test>]
+    member this.``Handles blocks that extend to the end of the array``() =
+        let arr = [| 1; 2; 2; 2 |]
+        let result = contiguousBlockOf 2 1 arr
+        ClassicAssert.AreEqual(Some(1, 3), result)
