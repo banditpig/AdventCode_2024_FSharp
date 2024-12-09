@@ -45,6 +45,7 @@
         <Compile Include="src\Day8.fs">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Compile>
+        <Compile Include="src\Day9.fs"/>
         <Compile Include="src\Program.fs"/>
 
     </ItemGroup>
