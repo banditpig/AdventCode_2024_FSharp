@@ -47,8 +47,10 @@ let restructure (data: char list) =
     dataArray
 
 let rec expand (d: char list) : char list =
-
+        
     let rec expand' (id: int) entry (data: char list) (result: char list) : char list =
+        
+        let charToInt theChar = int theChar - int '0'   
 
         let g (i: int) (entry: Entry) (theChar: char) =
             match entry with

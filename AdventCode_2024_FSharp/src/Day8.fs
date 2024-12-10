@@ -31,26 +31,6 @@ let pointsOnLineWithinGrid (x1, y1) (x2, y2) (xmax, ymax) =
 
 let distance (r1, c1) (r2, c2) = abs (r1 - r2) + abs (c1 - c2)
 
-let createGrid: Map<char, (int * int) list> =
-    let data = File.ReadAllLines("./Data/Day8.txt")
-
-    let grid =
-        data
-        |> Array.mapi (fun r row -> //rows
-            row
-            |> Seq.mapi (fun c ch -> (r, c, ch)) //columns
-            |> Seq.filter (fun (_, _, ch) -> ch <> '.') //filter out empty cells
-            |> Seq.map (fun (r, c, ch) -> (ch, (r, c)))) //map to (ch, (r, c))
-        |> Seq.concat //add all rows to one sequence
-        |> Seq.fold // fold over sequence
-            (fun acc (ch, coord) -> //acc is the accumulator
-                match Map.tryFind ch acc with //do we have an existing list for this character?
-                | Some coordList -> Map.add ch (coordList @ [ coord ]) acc //add to existing list
-                | None -> Map.add ch [ coord ] acc) //add new list
-            Map.empty //start with empty map
-
-    grid
-
 
 //list comprehension all pairs of coordinates
 let pairs (lst: 'a list) =
@@ -58,11 +38,15 @@ let pairs (lst: 'a list) =
           for j in i + 1 .. lst.Length - 1 do
               yield lst.[i], lst.[j] ]
 
-
+//let data = File.ReadAllLines(filePath)
 let part1 () =
-    let grid = createGrid
-    printfn "Day8 Part1 %A" 
-    let x =grid |> Map.map (fun ch coords -> pairs coords)
-         |> Map.map (fun ch pairs -> pairs |> List.map (fun (c1, c2) -> pointsOnLineWithinGrid  c1 c2 (12 ,12)))
+    let data = File.ReadAllLines("./Data/Day8.txt")
+    let grid = Grids.createGrid data (fun ch -> ch <> '.') id
+    printfn "Day8 Part1 %A"
+
+    let x =
+        grid
+        |> Map.map (fun ch coords -> pairs coords)
+        |> Map.map (fun ch pairs -> pairs |> List.map (fun (c1, c2) -> pointsOnLineWithinGrid c1 c2 (12, 12)))
     //if r,c is
     printfn "Day8 Part1 %A" x
