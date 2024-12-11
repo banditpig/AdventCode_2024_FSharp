@@ -55,6 +55,7 @@
         </Compile>
         <Compile Include="src\Day9.fs"/>
         <Compile Include="src\Day10.fs"/>
+        <Compile Include="src\Day11.fs"/>
         <Compile Include="src\Program.fs"/>
 
 

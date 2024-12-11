@@ -1,10 +1,11 @@
 module Day10
 
 open System.Collections.Generic
-let bfsFindAllPaths (grid: Grids.Grid<int>) (start: 'a) (target: 'a)  : 'a list list =
+
+let bfsFindAllPaths (grid: Grids.Grid<'T>) (start: 'a) (target: 'a) : 'a list list =
     // Queue to store paths being explored
     let queue = Queue<'a list>()
-    queue.Enqueue([start]) // Start with a path containing only the starting point
+    queue.Enqueue([ start ]) // Start with a path containing only the starting point
 
     let mutable result = []
 
@@ -19,15 +20,17 @@ let bfsFindAllPaths (grid: Grids.Grid<int>) (start: 'a) (target: 'a)  : 'a list 
         else
             // Explore neighbors that are not already in the current path
             let h = Map.find currentNode grid
-                
+
+            //all neighbours of current node
             let neighbours = Grids.neighbours grid Grids.NeighbourType.FourSquare currentNode
+            //only neighbours that are one higher than current node
             let nbs = List.filter (fun x -> (Map.find x grid) = h + 1) neighbours
 
-            nbs
-            |> List.filter (fun neighbor -> not (List.contains neighbor currentPath))
-            |> List.iter (fun neighbor -> queue.Enqueue(currentPath @ [neighbor]))
+            nbs |> List.iter (fun neighbor -> queue.Enqueue(currentPath @ [ neighbor ]))
+
 
     result // Return all found paths
+
 let path start (grid: Grids.Grid<int>) : int =
     //bfs search for path that ned with 9
 
@@ -54,40 +57,31 @@ let path start (grid: Grids.Grid<int>) : int =
 
                 visited.Add n |> ignore
 
-
-
-
     nineCount
 
 
-
-
-
-// let nbs = Grids.neighbours grid Grids.FourSquare current
-//      let nbs' = List.filter (fun x -> (Map.find x grid) = h + 1) nbs
-//
-
-
-
-let part1 () =
-
-
-
-
-    // convert  data into a 2d array of char
-
-
+let part2 () =
     let data = System.IO.File.ReadAllText "./Data/Day10.txt"
-    let grid = Grids.convertToMap (data) (Grids.charToInt)
+    let grid = Grids.createGrid (data) (Grids.charToInt)
 
     let starts = Grids.findCoodsOf 0 grid
     let ends = Grids.findCoodsOf 9 grid
+    let mutable allP = 0
+
+    for s in starts.Value do
+        for e in ends.Value do
+            allP <- allP + (bfsFindAllPaths grid s e).Length
+
+    printfn "Day10 Part2 %A " allP
+
+let part1 () =
+
+    let data = System.IO.File.ReadAllText "./Data/Day10.txt"
+    let grid = Grids.createGrid (data) (Grids.charToInt)
+    let starts = Grids.findCoodsOf 0 grid
     let mutable x = 0
 
     for start in starts.Value do
         x <- x + (path (start) grid)
 
-
-
-
-    printfn "Day10 Part1 %A " x
+    printfn "Day10 Part2 %A " x
