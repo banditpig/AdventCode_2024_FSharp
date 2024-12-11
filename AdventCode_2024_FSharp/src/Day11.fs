@@ -1,6 +1,15 @@
 module Day11
 
-let data = "4329 385 0 1444386 600463 19 1 56615"
+open System.Collections.Generic
+
+let data = "125 17"
+let mapping = Dictionary<int, int>()
+
+let addOrUpdate (key: int) =
+    if mapping.ContainsKey key then
+        mapping.[key] <- mapping.[key] + 1
+    else
+        mapping.Add(key, 1)
 
 let splitBrick (brick: string) : string list =
     let len = brick.Length
@@ -29,7 +38,7 @@ let processBricks (bricks: string list) =
 let part1 () =
     let mutable bricks = data.Split(' ') |> Array.toList
 
-    for i = 0 to 5 do
+    for i = 0 to 25 do
 
         bricks <- processBricks bricks
 
