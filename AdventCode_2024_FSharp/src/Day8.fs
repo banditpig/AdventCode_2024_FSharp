@@ -1,6 +1,5 @@
 module Day8
 
-open System.IO
 
 
 
@@ -40,13 +39,13 @@ let pairs (lst: 'a list) =
 
 //let data = File.ReadAllLines(filePath)
 let part1 () =
-    let data = File.ReadAllLines("./Data/Day8.txt")
-    let grid = Grids.createGrid data (fun ch -> ch <> '.') id
-    printfn "Day8 Part1 %A"
+    // let data = File.ReadAllLines("./Data/Day8.txt")
+    // let grid = Grids.createGrid data (fun ch -> ch <> '.') id
+    // printfn "Day8 Part1 %A"
 
-    let x =
-        grid
-        |> Map.map (fun ch coords -> pairs coords)
-        |> Map.map (fun ch pairs -> pairs |> List.map (fun (c1, c2) -> pointsOnLineWithinGrid c1 c2 (12, 12)))
+    // let x =
+    //     grid
+    //     |> Map.map (fun ch coords -> pairs coords)
+    //     |> Map.map (fun ch pairs -> pairs |> List.map (fun (c1, c2) -> pointsOnLineWithinGrid c1 c2 (12, 12)))
     //if r,c is
-    printfn "Day8 Part1 %A" x
+    printfn "Day8 Part1"

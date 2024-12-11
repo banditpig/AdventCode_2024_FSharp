@@ -38,6 +38,9 @@
         <Content Include="Data\Day9.txt">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <Content Include="Data\Day10.txt">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
         <Compile Include="src\Utils\Arrays.fs"/>
         <Compile Include="src\Utils\Grids.fs"/>
         <Compile Include="src\Day1.fs"/>
