@@ -91,20 +91,18 @@ let growFromSeed (seed) (startXY) (grid) (nt: NeighbourType) =
 
         let nbs = neighboursAll grid nt current
         let nbs' = List.filter (fun xy -> Map.tryFind xy grid = Some seed) nbs
-        // if List.length nbs' <> 4 then
-        //             borderLength <- borderLength + 1
+
         borderLength <- borderLength + List.length nbs - List.length nbs'
         visited.Add current |> ignore
 
         for n in nbs' do
             if not (visited.Contains n) then
                 area <- area + 1
-
-
                 queue.Enqueue n
                 visited.Add n |> ignore
 
-    (area, borderLength)
+
+    (area, borderLength, visited)
 
 let charToInt (c: char) : int = int c - int '0'
 
