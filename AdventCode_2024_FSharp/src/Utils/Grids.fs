@@ -74,6 +74,9 @@ let findCoodsOf: 'T -> Grid<'T> -> Option<(XY) list> =
 
 let getItemAtXY (xy: XY) (grid: Grid<'T>) : 'T = Map.find xy grid
 
+let uniqueValues (grid: Grid<'T>) : 'T list =
+    grid |> Map.values |> Seq.distinct |> Seq.toList
+
 let growFromSeed (seed) (startXY) (grid) (nt: NeighbourType) =
 
     let queue = Queue<XY>()
@@ -83,7 +86,7 @@ let growFromSeed (seed) (startXY) (grid) (nt: NeighbourType) =
     let mutable area = 1
 
     while queue.Count > 0 do
-        printfn "Queue count %A" queue
+
         let current = queue.Dequeue()
 
         let nbs = neighboursAll grid nt current
