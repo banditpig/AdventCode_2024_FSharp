@@ -5,10 +5,27 @@ module Day13
 open System.IO
 open FParsec
 
-type XY = { X: int; Y: int }
-type Button = { Name: string; Movement: XY }
+type XY =
+    { X: int
+      Y: int }
+
+    override this.ToString() = $"XY(X = {this.X}, Y = {this.Y})\n"
+
+type Button =
+    { Name: string
+      Movement: XY }
+
+    override this.ToString() =
+        $"Button (Name = {this.Name}, Movement = {this.Movement})\n"
+
 //type Prize = { X: int; Y: int }
-type GameData = { Buttons: Button list; Prize: XY }
+type GameData =
+    { Buttons: Button list
+      Prize: XY }
+
+    override this.ToString() =
+        $"GameData(Buttons!! = {this.Buttons}, Prize = {this.Prize})\n"
+
 
 // Parsers for common components
 let pInteger = pint32
@@ -59,4 +76,5 @@ let part1 () =
 
 
     let data = File.ReadAllText "./Data/Day13.txt"
-    printfn "Day13 Part1 %A" (parseInput data)
+    let gd = (parseInput data)
+    printfn $"{gd}"
