@@ -4,6 +4,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventCode_2024_FSharp", "A
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AdventCode_2024_FSharp_Tests", "AdventCode_2024_FSharp_Tests\AdventCode_2024_FSharp_Tests.fsproj", "{89122F48-9CC9-47C1-98C6-6E9C5E16ADD5}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "GridAnimationApp", "GridAnimationApp\GridAnimationApp.fsproj", "{3F60CF65-65BB-43B1-BCF4-73471F822C59}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{89122F48-9CC9-47C1-98C6-6E9C5E16ADD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89122F48-9CC9-47C1-98C6-6E9C5E16ADD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89122F48-9CC9-47C1-98C6-6E9C5E16ADD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F60CF65-65BB-43B1-BCF4-73471F822C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F60CF65-65BB-43B1-BCF4-73471F822C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F60CF65-65BB-43B1-BCF4-73471F822C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F60CF65-65BB-43B1-BCF4-73471F822C59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

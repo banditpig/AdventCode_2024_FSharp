@@ -88,7 +88,6 @@ let growFromSeed (seed) (startXY) (grid) (nt: NeighbourType) =
     while queue.Count > 0 do
 
         let current = queue.Dequeue()
-
         let nbs = neighboursAll grid nt current
         let nbs' = List.filter (fun xy -> Map.tryFind xy grid = Some seed) nbs
 
@@ -100,7 +99,6 @@ let growFromSeed (seed) (startXY) (grid) (nt: NeighbourType) =
                 area <- area + 1
                 queue.Enqueue n
                 visited.Add n |> ignore
-
 
     (area, borderLength, visited)
 
