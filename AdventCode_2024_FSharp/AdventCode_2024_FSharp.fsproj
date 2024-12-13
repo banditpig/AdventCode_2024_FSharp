@@ -42,7 +42,10 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Content Include="Data\Day12.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Data\Day13.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Compile Include="src\Utils\Arrays.fs"/>
         <Compile Include="src\Utils\Grids.fs"/>
@@ -60,12 +63,14 @@
         <Compile Include="src\Day10.fs"/>
         <Compile Include="src\Day11.fs"/>
         <Compile Include="src\Day12.fs"/>
+        <Compile Include="src\Day13.fs"/>
         <Compile Include="src\Program.fs"/>
 
 
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FParsec" Version="1.1.1"/>
         <PackageReference Include="MathNet.Numerics" Version="5.0.0"/>
         <PackageReference Include="MathNet.Numerics.FSharp" Version="5.0.0"/>
     </ItemGroup>
