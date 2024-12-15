@@ -20,6 +20,7 @@ let main argv =
     //Day10.part1 ()
     //Day11.part2 ()
     //Day12.part1 ()
-    Day13.part1 ()
+    //Day13.part1 ()
+    Day14.part1 ()
 
     0
